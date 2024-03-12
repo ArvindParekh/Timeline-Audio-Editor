@@ -1,7 +1,7 @@
 import audioControl from './audioControl';
 // import lottieControl from './lottieControl';
 
-export const scaleWidth = 160;
+export const scaleWidth = 260;
 export const scale = 5;
 export const startLeft = 20;
 
