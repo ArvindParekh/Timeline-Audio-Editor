@@ -47,9 +47,10 @@ export const mockData = [
         start: 0,
         end: 20,
         effectId: 'effect0',
+        movable: false,
         data: {
           src: '/concat.wav',
-          name: '背景音乐',
+          name: 'Random Noise',
         },
       },
     ],
@@ -65,7 +66,7 @@ export const mockData = [
         data: {
           // src: '/audio/bg.mp3',
           src: '/concat.wav',
-          name: 'background',
+          name: 'Random Noise',
         },
       },
     ],

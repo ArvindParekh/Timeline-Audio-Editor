@@ -26,11 +26,11 @@ const TimelineEditor = () => {
 
    function handleChange(e) {
       const files = e.target.files;
-      const newAudioArr = Array.from(files).map((file) => ({
+      const newAudioArr = Array.from(files).map((file, index) => ({
          id: file.name,
          actions: [
             {
-               id: "action0",
+               id: `action${index}`,
                start: 0,
                end: 20,
                effectId: "effect0",
@@ -67,7 +67,7 @@ const TimelineEditor = () => {
             ref={timelineState}
             editorData={data}
             effects={mockEffect}
-            gridSnap={true}
+            // gridSnap={true}
             dragLine={true}
             onChange={(data) => {
                setData(data);
