@@ -45,14 +45,23 @@ export const mockData = [
       {
         id: 'action0',
         start: 0,
-        end: 20,
+        end: 10,
         effectId: 'effect0',
-        movable: false,
         data: {
           src: '/concat.wav',
           name: 'Random Noise',
         },
       },
+      // {
+      //   id: 'action1',
+      //   start: 15,
+      //   end: 20,
+      //   effectId: 'effect0',
+      //   data: {
+      //     src: '/concat.wav',
+      //     name: 'Random Noise',
+      //   },
+      // },
     ],
   },
   {
