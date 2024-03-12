@@ -1,5 +1,4 @@
 import { Howl } from 'howler';
-// import { TimelineEngine } from '@xzdarcy/react-timeline-editor';
 
 class AudioControl {
   constructor() {

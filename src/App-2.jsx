@@ -1,31 +1,52 @@
 import { Timeline } from "@xzdarcy/react-timeline-editor";
-import { Switch } from "antd";
 import { cloneDeep } from "lodash";
 import { useRef, useState } from "react";
 import { CustomRender0 } from "./custom";
 import "./index.css";
 import { mockData, mockEffect, scale, scaleWidth, startLeft } from "./mock";
 import TimelinePlayer from "./player";
+import { useEffect } from "react";
 
 const defaultEditorData = cloneDeep(mockData);
-
+console.log(defaultEditorData);
 const TimelineEditor = () => {
    const [data, setData] = useState(defaultEditorData);
    const timelineState = useRef();
    const playerPanel = useRef();
    const autoScrollWhenPlay = useRef(true);
+   const inputRef = useRef();
+
+   useEffect(() => {
+      console.log("Mock data is changed");
+   }, [data]);
+
+   function getFileFromDevice() {
+      inputRef.current.click();
+   }
+
+   function handleChange(e) {
+      const files = e.target.files;
+      const newAudioArr = Array.from(files).map((file) => ({
+         id: file.name,
+         actions: [
+            {
+               id: "action0",
+               start: 0,
+               end: 20,
+               effectId: "effect0",
+               data: {
+                  src: URL.createObjectURL(file),
+                  name: file.name,
+               },
+            },
+         ],
+      }));
+
+      setData([...data, ...newAudioArr]);
+   }
 
    return (
       <div className='timeline-editor-engine'>
-         {/* <div className='player-config'>
-            <Switch
-               checkedChildren='开启运行时自动滚动'
-               unCheckedChildren='禁用运行时自动滚动'
-               defaultChecked={autoScrollWhenPlay.current}
-               onChange={(e) => (autoScrollWhenPlay.current = e)}
-               style={{ marginBottom: 20 }}
-            />
-         </div> */}
          <div
             className='player-panel'
             id='player-ground-1'
@@ -57,6 +78,22 @@ const TimelineEditor = () => {
                }
             }}
          />
+         <div>
+            <input
+               type='file'
+               accept='audio/*'
+               style={{ display: "none" }}
+               ref={inputRef}
+               onChange={handleChange}
+               multiple
+            />
+            <button
+               className='mt-5 rounded-md bg-gray-800 p-2 text-base font-medium text-white hover:bg-white hover:text-gray-800 transition-all hover:border hover:border-gray-800'
+               onClick={getFileFromDevice}
+            >
+               Select a file or drop it here
+            </button>
+         </div>
       </div>
    );
 };

@@ -48,7 +48,6 @@ const TimelinePlayer = ({ timelineState, autoScrollWhenPlay }) => {
    };
 
    const handleRateChange = (rate) => {
-      console.log(rate);
       if (!timelineState.current) return;
       timelineState.current.setPlayRate(rate);
    };
@@ -64,18 +63,18 @@ const TimelinePlayer = ({ timelineState, autoScrollWhenPlay }) => {
       <div className='timeline-player'>
          <div className='play-control' onClick={handlePlayOrPause}>
             {/* {isPlaying ? <PauseOutlined /> : <CaretRightOutlined />} */}
-            {isPlaying ? <h1>pause</h1> : <h1>play</h1>}
+            {isPlaying ? <h1>Play</h1> : <h1>Pause</h1>}
          </div>
          <div className='time'>{timeRender(time)}</div>
          <div className='rate-control'>
             <Select
                size={"small"}
                defaultValue={1}
-               style={{ width: 120}}
+               style={{ width: 120 }}
                onChange={handleRateChange}
             >
                {Rates.map((rate) => (
-                  <Option key={rate} value={rate} className="bg-white">{`${rate.toFixed(
+                  <Option key={rate} value={rate} className="bg-white z-50">{`${rate.toFixed(
                      1
                   )} speed`}</Option>
                ))}
