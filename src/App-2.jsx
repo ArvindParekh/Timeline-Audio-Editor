@@ -2,7 +2,7 @@ import { Timeline } from "@xzdarcy/react-timeline-editor";
 import { Switch } from "antd";
 import { cloneDeep } from "lodash";
 import { useRef, useState } from "react";
-import { CustomRender0, CustomRender1 } from "./custom";
+import { CustomRender0 } from "./custom";
 import "./index.less";
 import { mockData, mockEffect, scale, scaleWidth, startLeft } from "./mock";
 import TimelinePlayer from "./player";
@@ -43,9 +43,7 @@ const TimelineEditor = () => {
             getActionRender={(action, row) => {
                if (action.effectId === "effect0") {
                   return <CustomRender0 action={action} row={row} />;
-               } else if (action.effectId === "effect1") {
-                  return <CustomRender1 action={action} row={row} />;
-               }
+               } 
             }}
          />
       </div>

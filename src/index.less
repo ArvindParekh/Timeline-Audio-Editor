@@ -6,11 +6,11 @@
 @fontsize-small: 10px;
 @border-radius: 4px;
 
-.timeline-editor-action-effect-effect0{
-  background: #cd9541;
-}
+// .timeline-editor-action-effect-effect0{
+//   background: #cd9541;
+// }
 
-.timeline-editor-example2 {
+.timeline-editor-engine {
 
   .timeline-editor {
     width: 100%;
@@ -27,7 +27,7 @@
 
       &-effect-effect0 {
         cursor: pointer;
-        background-color: #cd9541;
+        background-color: #9541cd;
         background-image: url("/assets/soundWave.png");
         background-position: bottom;
         background-repeat: repeat-x;
@@ -60,25 +60,25 @@
         .timeline-editor-action-left-stretch,
         .timeline-editor-action-right-stretch {
           overflow: inherit;
-          
+
           &::after {
-            width: 18px;
-            height: 18px;
-            transform: rotate(
-              45deg
-            ) scale(.8);
-            background: #aabbcc;
+            width: 8px;
+            height: 25px;
+            // transform: rotate(
+            //   45deg
+            // ) scale(.8);
+            background: #ffffff9a;
             border: none;
           }
         }
 
-        .timeline-editor-action-left-stretch::after {
-          left: -9px;
-        }
+        // .timeline-editor-action-left-stretch::after {
+        //   left: -9px;
+        // }
     
-        .timeline-editor-action-right-stretch::after {
-          right: -9px;
-        }
+        // .timeline-editor-action-right-stretch::after {
+        //   right: -9px;
+        // }
       }
       
       .effect1 {
