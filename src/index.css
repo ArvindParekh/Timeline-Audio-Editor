@@ -26,6 +26,7 @@
 .timeline-editor-action-effect-effect0 {
     cursor: pointer;
     background-color: var(--color-audio);
+    background-image: url('/waveform.png');
     background-position: bottom;
     background-repeat: repeat-x;
 }
