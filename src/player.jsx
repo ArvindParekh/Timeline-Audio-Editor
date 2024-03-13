@@ -61,7 +61,7 @@ const TimelinePlayer = ({ timelineState, autoScrollWhenPlay }) => {
 
    return (
       <div className='timeline-player'>
-         <div className='play-control' onClick={handlePlayOrPause}>
+         <div className='play-control cursor-pointer' onClick={handlePlayOrPause}>
             {/* {isPlaying ? <PauseOutlined /> : <CaretRightOutlined />} */}
             {isPlaying ? <h1>Play</h1> : <h1>Pause</h1>}
          </div>

@@ -12,6 +12,7 @@ export const mockEffect = {
       start: ({ action, engine, isPlaying, time }) => {
         if (isPlaying) {
           const src = action.data.src;
+          console.log("helloooooo",src, action.id);
           const id = action.id;
           audioControl.start({ id: id, src, startTime: action.start, engine, time });
         }
@@ -34,7 +35,6 @@ export const mockEffect = {
         audioControl.stop({ id: id, engine });
       },
     },
-    color:"red"
   },
 };
 

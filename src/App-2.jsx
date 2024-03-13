@@ -16,31 +16,40 @@ const TimelineEditor = () => {
    const inputRef = useRef();
 
    useEffect(() => {
-      console.log("Mock data is changed");
+      console.log(data);
    }, [data]);
 
    function getFileFromDevice() {
       inputRef.current.click();
    }
 
+
    function handleChange(e) {
       const files = e.target.files;
-      const newAudioArr = Array.from(files).map((file, index) => ({
-         id: file.name,
-         actions: [
-            {
-               id: `action${index}`,
-               start: 0,
-               end: 20,
-               effectId: "effect0",
-               data: {
-                  src: URL.createObjectURL(file),
-                  name: file.name,
+      const newAudioArr = Array.from(files).map((file, index) => {
+         const audio = new Audio(URL.createObjectURL(file));
+         audio.onloadedmetadata = () => {
+            // console.log(audio.duration);
+         };
+         // console.log(file);
+         return {
+            id: `${index+2}`,
+            actions: [
+               {
+                  id: `action${index}`,
+                  start: 0,
+                  end: 20,
+                  effectId: "effect0",
+                  data: {
+                     src: '/concat.wav',
+                     name: file.name,
+                  },
                },
-            },
-         ],
-      }));
+            ],
+         };
+      });
 
+      console.log(newAudioArr);
       setData([...data, ...newAudioArr]);
    }
 

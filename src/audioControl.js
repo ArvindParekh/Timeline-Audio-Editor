@@ -15,8 +15,9 @@ class AudioControl {
       item.seek((time - startTime) % item.duration());
       item.play();
     } else {
-      item = new Howl({ src, loop: true, autoplay: true });
+      item = new Howl({ src: [src], loop: true, autoplay: true });
       this.cacheMap[id] = item;
+      console.log(item);
       item.on('load', () => {
         item.rate(engine.getPlayRate());
         item.seek((time - startTime) % item.duration());
