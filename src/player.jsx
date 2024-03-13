@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-// import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
+import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
 // import { TimelineState } from "@xzdarcy/react-timeline-editor";
 import { Select } from "antd";
 import { useEffect, useState } from "react";
@@ -47,10 +47,10 @@ const TimelinePlayer = ({ timelineState, autoScrollWhenPlay }) => {
       }
    };
 
-   const handleRateChange = (rate) => {
-      if (!timelineState.current) return;
-      timelineState.current.setPlayRate(rate);
-   };
+   // const handleRateChange = (rate) => {
+   //    if (!timelineState.current) return;
+   //    timelineState.current.setPlayRate(rate);
+   // };
 
    const timeRender = (time) => {
       const float = (parseInt((time % 1) * 100 + "") + "").padStart(2, "0");
@@ -60,13 +60,13 @@ const TimelinePlayer = ({ timelineState, autoScrollWhenPlay }) => {
    };
 
    return (
-      <div className='timeline-player'>
+      <div className='timeline-player flex items-center justify-center ml-4 gap-5'>
          <div className='play-control cursor-pointer' onClick={handlePlayOrPause}>
-            {/* {isPlaying ? <PauseOutlined /> : <CaretRightOutlined />} */}
-            {isPlaying ? <h1>Play</h1> : <h1>Pause</h1>}
+            {isPlaying ? <PauseOutlined /> : <CaretRightOutlined />}
+            {/* {isPlaying ? <h1>Play</h1> : <h1>Pause</h1>} */}
          </div>
          <div className='time'>{timeRender(time)}</div>
-         <div className='rate-control'>
+         {/* <div className='rate-control'>
             <Select
                size={"small"}
                defaultValue={1}
@@ -79,7 +79,7 @@ const TimelinePlayer = ({ timelineState, autoScrollWhenPlay }) => {
                   )} speed`}</Option>
                ))}
             </Select>
-         </div>
+         </div> */}
       </div>
    );
 };

@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.3.1",
     "@xzdarcy/react-timeline-editor": "0.1.8",
     "antd": "4.21.6",
     "howler": "^2.2.4",

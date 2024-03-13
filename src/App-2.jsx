@@ -194,12 +194,35 @@ const TimelineEditor = () => {
             id='player-ground-1'
             ref={playerPanel}
          ></div>
-         <div className='flex bg-black text-white w-full'>
+         <div className='flex py-5 bg-black text-white w-full items-center justify-center gap-10 timeline-player-container'>
             <TimelinePlayer
                timelineState={timelineState}
                autoScrollWhenPlay={autoScrollWhenPlay}
                className='bg-red-700'
             />
+            <div>
+               <input
+                  type='file'
+                  accept='audio/*'
+                  style={{ display: "none" }}
+                  ref={doubleClickRef}
+                  onChange={handleDoubleClick}
+               />
+               <input
+                  type='file'
+                  accept='audio/*'
+                  style={{ display: "none" }}
+                  ref={inputRef}
+                  onChange={handleChange}
+                  multiple
+               />
+               <button
+                  className='rounded-md bg-white p-2 text-base font-medium text-black'
+                  onClick={getFileFromDevice}
+               >
+                  Select a file or drop it here
+               </button>
+            </div>
          </div>
          <Timeline
             scale={scale}
@@ -224,7 +247,7 @@ const TimelineEditor = () => {
                doubleClickRef.current.click();
             }}
          />
-         <div>
+         {/* <div>
             <input
                type='file'
                accept='audio/*'
@@ -246,7 +269,7 @@ const TimelineEditor = () => {
             >
                Select a file or drop it here
             </button>
-         </div>
+         </div> */}
       </div>
    );
 };
