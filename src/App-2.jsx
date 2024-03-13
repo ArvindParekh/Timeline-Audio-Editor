@@ -1,15 +1,104 @@
 import { Timeline } from "@xzdarcy/react-timeline-editor";
-import { cloneDeep } from "lodash";
+// import { cloneDeep } from "lodash";
 import { useRef, useState } from "react";
 import { CustomRender0 } from "./custom";
-import { mockData, mockEffect, scale, scaleWidth, startLeft } from "./mock";
+import { scale, scaleWidth, startLeft } from "./mock";
 import TimelinePlayer from "./player";
 import { useEffect } from "react";
+import audioControl from "./audioControl";
 
-const defaultEditorData = cloneDeep(mockData);
-console.log(defaultEditorData);
+// const defaultEditorData = cloneDeep(mockData);
+// console.log(defaultEditorData);
 const TimelineEditor = () => {
-   const [data, setData] = useState(defaultEditorData);
+   const [data, setData] = useState([
+      {
+         id: "0",
+         actions: [
+            {
+               id: "action0",
+               start: 0,
+               end: 10,
+               effectId: "effect0",
+               data: {
+                  src: "/concat.wav",
+                  name: "Random Noise",
+               },
+            },
+            // {
+            //   id: 'action1',
+            //   start: 15,
+            //   end: 20,
+            //   effectId: 'effect0',
+            //   data: {
+            //     src: '/concat.wav',
+            //     name: 'Random Noise',
+            //   },
+            // },
+         ],
+      },
+      {
+         id: "1",
+         actions: [
+            {
+               id: "action1",
+               start: 10,
+               end: 15,
+               effectId: "effect0",
+               data: {
+                  // src: '/audio/bg.mp3',
+                  src: "/concat.wav",
+                  name: "Random Noise",
+               },
+            },
+         ],
+      },
+   ]);
+   const [effect, setEffect] = useState({
+      effect0: {
+         id: "effect0",
+         name: "Audio Effect",
+         source: {
+            start: ({ action, engine, isPlaying, time }) => {
+               console.log("Entered start");
+               if (isPlaying) {
+                  const src = action.data.src;
+                  const id = action.id;
+                  audioControl.start({
+                     id: id,
+                     src,
+                     startTime: action.start,
+                     engine,
+                     time,
+                  });
+               }
+            },
+            enter: ({ action, engine, isPlaying, time }) => {
+               console.log("Entered enter");
+               if (isPlaying) {
+                  const src = action.data.src;
+                  const id = action.id;
+                  audioControl.start({
+                     id: id,
+                     src,
+                     startTime: action.start,
+                     engine,
+                     time,
+                  });
+               }
+            },
+            leave: ({ action, engine }) => {
+               const src = action.data.src;
+               const id = action.id;
+               audioControl.stop({ id: id, engine });
+            },
+            stop: ({ action, engine }) => {
+               const src = action.data.src;
+               const id = action.id;
+               audioControl.stop({ id: id, engine });
+            },
+         },
+      },
+   });
    const timelineState = useRef();
    const playerPanel = useRef();
    const autoScrollWhenPlay = useRef(true);
@@ -23,34 +112,39 @@ const TimelineEditor = () => {
       inputRef.current.click();
    }
 
-
    function handleChange(e) {
       const files = e.target.files;
       const newAudioArr = Array.from(files).map((file, index) => {
-         const audio = new Audio(URL.createObjectURL(file));
-         audio.onloadedmetadata = () => {
-            // console.log(audio.duration);
-         };
-         // console.log(file);
-         return {
-            id: `${index+2}`,
-            actions: [
-               {
-                  id: `action${index}`,
-                  start: 0,
-                  end: 20,
-                  effectId: "effect0",
-                  data: {
-                     src: '/concat.wav',
-                     name: file.name,
-                  },
-               },
-            ],
-         };
+         return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+               // The file's Data URL will be available here
+               const dataUrl = event.target.result;
+               resolve({
+                  id: `${index + 2}`,
+                  actions: [
+                     {
+                        id: `action${index + 2}`,
+                        start: 0,
+                        end: 20, // You might want to set this based on the actual duration of the audio file
+                        effectId: "effect0",
+                        data: {
+                           src: dataUrl, // Use the Data URL as the src
+                           name: file.name,
+                        },
+                     },
+                  ],
+               });
+            };
+            reader.readAsDataURL(file); // Start reading the file as a Data URL
+         });
       });
 
-      console.log(newAudioArr);
-      setData([...data, ...newAudioArr]);
+      // Since map returns an array of promises, we use Promise.all to wait for all promises to resolve
+      Promise.all(newAudioArr).then((resolvedAudioArr) => {
+         console.log(resolvedAudioArr);
+         setData([...data, ...resolvedAudioArr]);
+      });
    }
 
    return (
@@ -74,7 +168,7 @@ const TimelineEditor = () => {
             autoScroll={true}
             ref={timelineState}
             editorData={data}
-            effects={mockEffect}
+            effects={effect}
             // gridSnap={true}
             dragLine={true}
             onChange={(data) => {
