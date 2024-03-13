@@ -1,10 +1,9 @@
 /* eslint-disable react/prop-types */
-import { CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
+import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
 // import { TimelineState } from "@xzdarcy/react-timeline-editor";
 import { Select } from "antd";
 import { useEffect, useState } from "react";
-import lottieControl from "./lottieControl";
-import { scale, scaleWidth, startLeft } from "./mock";
+import { scale, scaleWidth, startLeft } from "../lib/mock";
 
 const { Option } = Select;
 export const Rates = [0.2, 0.5, 1.0, 1.5, 2.0];
@@ -34,7 +33,6 @@ const TimelinePlayer = ({ timelineState, autoScrollWhenPlay }) => {
          if (!engine) return;
          engine.pause();
          engine.listener.offAll();
-         lottieControl.destroy();
       };
    }, []);
 
@@ -61,7 +59,10 @@ const TimelinePlayer = ({ timelineState, autoScrollWhenPlay }) => {
 
    return (
       <div className='timeline-player flex items-center justify-center ml-4 gap-5'>
-         <div className='play-control cursor-pointer' onClick={handlePlayOrPause}>
+         <div
+            className='play-control cursor-pointer'
+            onClick={handlePlayOrPause}
+         >
             {isPlaying ? <PauseOutlined /> : <CaretRightOutlined />}
             {/* {isPlaying ? <h1>Play</h1> : <h1>Pause</h1>} */}
          </div>

@@ -1,18 +1,11 @@
 import { Timeline } from "@xzdarcy/react-timeline-editor";
 import { useRef, useState } from "react";
-import { CustomRender0 } from "./custom";
-import { scale, scaleWidth, startLeft } from "./mock";
-import TimelinePlayer from "./player";
-import { useEffect } from "react";
-import audioControl from "./audioControl";
+import { CustomRender0 } from "../components/custom";
+import { scale, scaleWidth, startLeft } from "../lib/mock";
+import TimelinePlayer from "../components/player";
+import audioControl from "../lib/audioControl";
 
 const TimelineEditor = () => {
-   const idRef = useRef(4);
-   const doubleClickRef = useRef();
-   const [doubleClickData, setDoubleClickData] = useState({
-      row: null,
-      time: null,
-   });
    const preloadedData = [
       {
          id: "0",
@@ -106,6 +99,12 @@ const TimelineEditor = () => {
    const playerPanel = useRef();
    const autoScrollWhenPlay = useRef(true);
    const inputRef = useRef();
+   const idRef = useRef(4);
+   const doubleClickRef = useRef();
+   const [doubleClickData, setDoubleClickData] = useState({
+      row: null,
+      time: null,
+   });
 
    function getFileFromDevice() {
       inputRef.current.click();
@@ -198,7 +197,6 @@ const TimelineEditor = () => {
             <TimelinePlayer
                timelineState={timelineState}
                autoScrollWhenPlay={autoScrollWhenPlay}
-               className='bg-red-700'
             />
             <div>
                <input
@@ -220,7 +218,7 @@ const TimelineEditor = () => {
                   className='rounded-md bg-white p-2 text-base font-medium text-black'
                   onClick={getFileFromDevice}
                >
-                  Select a file or drop it here
+                  Load a local file
                </button>
             </div>
          </div>
@@ -247,29 +245,6 @@ const TimelineEditor = () => {
                doubleClickRef.current.click();
             }}
          />
-         {/* <div>
-            <input
-               type='file'
-               accept='audio/*'
-               style={{ display: "none" }}
-               ref={doubleClickRef}
-               onChange={handleDoubleClick}
-            />
-            <input
-               type='file'
-               accept='audio/*'
-               style={{ display: "none" }}
-               ref={inputRef}
-               onChange={handleChange}
-               multiple
-            />
-            <button
-               className='mt-5 rounded-md bg-gray-800 p-2 text-base font-medium text-white hover:bg-white hover:text-gray-800 transition-all hover:border hover:border-gray-800'
-               onClick={getFileFromDevice}
-            >
-               Select a file or drop it here
-            </button>
-         </div> */}
       </div>
    );
 };
