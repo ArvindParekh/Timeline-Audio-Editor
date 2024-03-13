@@ -17,12 +17,6 @@ dependencies:
   howler:
     specifier: ^2.2.4
     version: 2.2.4
-  lodash:
-    specifier: 4.17.21
-    version: 4.17.21
-  lottie-web:
-    specifier: ^5.12.2
-    version: 5.12.2
   path:
     specifier: ^0.12.7
     version: 0.12.7
@@ -2379,10 +2373,6 @@ packages:
     hasBin: true
     dependencies:
       js-tokens: 4.0.0
-
-  /lottie-web@5.12.2:
-    resolution: {integrity: sha512-uvhvYPC8kGPjXT3MyKMrL3JitEAmDMp30lVkuq/590Mw9ok6pWcFCwXJveo0t5uqYw1UREQHofD+jVpdjBv8wg==}
-    dev: false
 
   /lru-cache@10.2.0:
     resolution: {integrity: sha512-2bIM8x+VAf6JT4bKAljS1qUWgMsqZRPGJS6FSahIMPVvctcNhyVp7AJu7quxOW9jwkryBReKZY5tY5JYv2n/7Q==}
