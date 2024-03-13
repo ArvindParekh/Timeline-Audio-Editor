@@ -1,5 +1,4 @@
 import { Timeline } from "@xzdarcy/react-timeline-editor";
-// import { cloneDeep } from "lodash";
 import { useRef, useState } from "react";
 import { CustomRender0 } from "./custom";
 import { scale, scaleWidth, startLeft } from "./mock";
@@ -7,10 +6,14 @@ import TimelinePlayer from "./player";
 import { useEffect } from "react";
 import audioControl from "./audioControl";
 
-// const defaultEditorData = cloneDeep(mockData);
-// console.log(defaultEditorData);
 const TimelineEditor = () => {
-   const [data, setData] = useState([
+   const idRef = useRef(4);
+   const doubleClickRef = useRef();
+   const [doubleClickData, setDoubleClickData] = useState({
+      row: null,
+      time: null,
+   });
+   const preloadedData = [
       {
          id: "0",
          actions: [
@@ -52,8 +55,8 @@ const TimelineEditor = () => {
             },
          ],
       },
-   ]);
-   const [effect, setEffect] = useState({
+   ];
+   const preloadedEffect = {
       effect0: {
          id: "effect0",
          name: "Audio Effect",
@@ -98,7 +101,9 @@ const TimelineEditor = () => {
             },
          },
       },
-   });
+   };
+   const [data, setData] = useState(preloadedData);
+   const [effect] = useState(preloadedEffect);
    const timelineState = useRef();
    const playerPanel = useRef();
    const autoScrollWhenPlay = useRef(true);
@@ -118,7 +123,6 @@ const TimelineEditor = () => {
          return new Promise((resolve) => {
             const reader = new FileReader();
             reader.onload = function (event) {
-               // The file's Data URL will be available here
                const dataUrl = event.target.result;
                resolve({
                   id: `${index + 2}`,
@@ -126,25 +130,58 @@ const TimelineEditor = () => {
                      {
                         id: `action${index + 2}`,
                         start: 0,
-                        end: 20, // You might want to set this based on the actual duration of the audio file
+                        end: 20,
                         effectId: "effect0",
                         data: {
-                           src: dataUrl, // Use the Data URL as the src
+                           src: dataUrl,
                            name: file.name,
                         },
                      },
                   ],
                });
             };
-            reader.readAsDataURL(file); // Start reading the file as a Data URL
+            reader.readAsDataURL(file);
          });
       });
 
-      // Since map returns an array of promises, we use Promise.all to wait for all promises to resolve
       Promise.all(newAudioArr).then((resolvedAudioArr) => {
          console.log(resolvedAudioArr);
          setData([...data, ...resolvedAudioArr]);
       });
+   }
+
+   // Called when uploading a new file on Double Click
+   function handleDoubleClick(e) {
+      const { row, time } = doubleClickData;
+      const file = e.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+         const dataUrl = event.target.result;
+         console.log(dataUrl); // Now dataUrl is available
+
+         setData((pre) => {
+            const rowIndex = pre.findIndex((item) => item.id === row.id);
+            console.log(row.actions[0].data.src);
+            const newAction = {
+               id: `action${idRef.current++}`,
+               start: time,
+               end: time + 2,
+               effectId: "effect0",
+               data: {
+                  src: dataUrl,
+                  name: file.name,
+               },
+            };
+            pre[rowIndex] = {
+               ...row,
+               actions: row.actions.concat(newAction),
+            };
+            return [...pre];
+         });
+      };
+
+      reader.readAsDataURL(file);
    }
 
    return (
@@ -179,8 +216,20 @@ const TimelineEditor = () => {
                   return <CustomRender0 action={action} row={row} />;
                }
             }}
+            onDoubleClickRow={(e, { row, time }) => {
+               console.log(row);
+               setDoubleClickData({ row: row, time: time });
+               doubleClickRef.current.click();
+            }}
          />
          <div>
+            <input
+               type='file'
+               accept='audio/*'
+               style={{ display: "none" }}
+               ref={doubleClickRef}
+               onChange={handleDoubleClick}
+            />
             <input
                type='file'
                accept='audio/*'
