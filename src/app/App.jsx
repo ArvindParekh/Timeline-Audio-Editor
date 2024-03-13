@@ -13,11 +13,11 @@ const TimelineEditor = () => {
             {
                id: "action0",
                start: 0,
-               end: 10,
+               end: 50,
                effectId: "effect0",
                data: {
-                  src: "/concat.wav",
-                  name: "Random Noise",
+                  src: "/pehla-nasha.mp3",
+                  name: "Pehla Nasha",
                },
             },
             // {
@@ -32,22 +32,22 @@ const TimelineEditor = () => {
             // },
          ],
       },
-      {
-         id: "1",
-         actions: [
-            {
-               id: "action1",
-               start: 10,
-               end: 15,
-               effectId: "effect0",
-               data: {
-                  // src: '/audio/bg.mp3',
-                  src: "/concat.wav",
-                  name: "Random Noise",
-               },
-            },
-         ],
-      },
+      // {
+      //    id: "1",
+      //    actions: [
+      //       {
+      //          id: "action1",
+      //          start: 10,
+      //          end: 15,
+      //          effectId: "effect0",
+      //          data: {
+      //             // src: '/audio/bg.mp3',
+      //             src: "/concat.wav",
+      //             name: "Random Noise",
+      //          },
+      //       },
+      //    ],
+      // },
    ];
    const preloadedEffect = {
       effect0: {
