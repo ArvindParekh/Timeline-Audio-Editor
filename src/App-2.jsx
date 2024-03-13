@@ -62,7 +62,6 @@ const TimelineEditor = () => {
          name: "Audio Effect",
          source: {
             start: ({ action, engine, isPlaying, time }) => {
-               console.log("Entered start");
                if (isPlaying) {
                   const src = action.data.src;
                   const id = action.id;
@@ -76,7 +75,6 @@ const TimelineEditor = () => {
                }
             },
             enter: ({ action, engine, isPlaying, time }) => {
-               console.log("Entered enter");
                if (isPlaying) {
                   const src = action.data.src;
                   const id = action.id;
@@ -90,12 +88,12 @@ const TimelineEditor = () => {
                }
             },
             leave: ({ action, engine }) => {
-               const src = action.data.src;
+               // const src = action.data.src;
                const id = action.id;
                audioControl.stop({ id: id, engine });
             },
             stop: ({ action, engine }) => {
-               const src = action.data.src;
+               // const src = action.data.src;
                const id = action.id;
                audioControl.stop({ id: id, engine });
             },
@@ -109,10 +107,6 @@ const TimelineEditor = () => {
    const autoScrollWhenPlay = useRef(true);
    const inputRef = useRef();
 
-   useEffect(() => {
-      console.log(data);
-   }, [data]);
-
    function getFileFromDevice() {
       inputRef.current.click();
    }
@@ -124,28 +118,33 @@ const TimelineEditor = () => {
             const reader = new FileReader();
             reader.onload = function (event) {
                const dataUrl = event.target.result;
-               resolve({
-                  id: `${index + 2}`,
-                  actions: [
-                     {
-                        id: `action${index + 2}`,
-                        start: 0,
-                        end: 20,
-                        effectId: "effect0",
-                        data: {
-                           src: dataUrl,
-                           name: file.name,
+               const audio = new Audio(dataUrl);
+               audio.oncanplaythrough = () => {
+                  const duration = Math.ceil(audio.duration);
+                  console.log("Duration is: ", duration);
+                  resolve({
+                     id: `${index + 2}`,
+                     actions: [
+                        {
+                           id: `action${index + 2}`,
+                           start: 0,
+                           end: Math.ceil(duration),
+                           // end: 7,
+                           effectId: "effect0",
+                           data: {
+                              src: dataUrl,
+                              name: file.name,
+                           },
                         },
-                     },
-                  ],
-               });
+                     ],
+                  });
+               };
             };
             reader.readAsDataURL(file);
          });
       });
 
       Promise.all(newAudioArr).then((resolvedAudioArr) => {
-         console.log(resolvedAudioArr);
          setData([...data, ...resolvedAudioArr]);
       });
    }
@@ -158,27 +157,31 @@ const TimelineEditor = () => {
 
       reader.onload = (event) => {
          const dataUrl = event.target.result;
-         console.log(dataUrl); // Now dataUrl is available
+         const audio = new Audio(dataUrl);
 
-         setData((pre) => {
-            const rowIndex = pre.findIndex((item) => item.id === row.id);
-            console.log(row.actions[0].data.src);
-            const newAction = {
-               id: `action${idRef.current++}`,
-               start: time,
-               end: time + 2,
-               effectId: "effect0",
-               data: {
-                  src: dataUrl,
-                  name: file.name,
-               },
-            };
-            pre[rowIndex] = {
-               ...row,
-               actions: row.actions.concat(newAction),
-            };
-            return [...pre];
-         });
+         audio.oncanplaythrough = () => {
+            const duration = Math.ceil(audio.duration);
+            console.log("Duration is: ", duration);
+
+            setData((pre) => {
+               const rowIndex = pre.findIndex((item) => item.id === row.id);
+               const newAction = {
+                  id: `action${idRef.current++}`,
+                  start: time,
+                  end: time + duration, // Set end time as start time + duration
+                  effectId: "effect0",
+                  data: {
+                     src: dataUrl,
+                     name: file.name,
+                  },
+               };
+               pre[rowIndex] = {
+                  ...row,
+                  actions: row.actions.concat(newAction),
+               };
+               return [...pre];
+            });
+         };
       };
 
       reader.readAsDataURL(file);
@@ -217,7 +220,6 @@ const TimelineEditor = () => {
                }
             }}
             onDoubleClickRow={(e, { row, time }) => {
-               console.log(row);
                setDoubleClickData({ row: row, time: time });
                doubleClickRef.current.click();
             }}
