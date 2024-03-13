@@ -10,6 +10,7 @@ import audioControl from "./audioControl";
 // const defaultEditorData = cloneDeep(mockData);
 // console.log(defaultEditorData);
 const TimelineEditor = () => {
+   const idRef = useRef(4);
    const [data, setData] = useState([
       {
          id: "0",
@@ -178,6 +179,27 @@ const TimelineEditor = () => {
                if (action.effectId === "effect0") {
                   return <CustomRender0 action={action} row={row} />;
                }
+            }}
+            onDoubleClickRow={(e, { row, time }) => {
+               console.log(row);
+               setData((pre) => {
+                  const rowIndex = pre.findIndex((item) => item.id === row.id);
+                  console.log(row.actions[0].data.src);
+                  const newAction = {
+                     id: `action${idRef.current++}`,
+                     start: time,
+                     end: time + 0.5,
+                     effectId: "effect0",
+                     data: {
+                        src: row.actions[0].data.src,
+                     },
+                  };
+                  pre[rowIndex] = {
+                     ...row,
+                     actions: row.actions.concat(newAction),
+                  };
+                  return [...pre];
+               });
             }}
          />
          <div>
